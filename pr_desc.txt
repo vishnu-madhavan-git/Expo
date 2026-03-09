@@ -1,0 +1,6 @@
+🧹 [Remove stale TODO about missing function declarations in ImageNativeModule]
+
+🎯 **What:** Removed an outdated `// TODO: Add missing function declarations` comment from the `ImageNativeModule` interface in `packages/expo-image/src/Image.types.ts`.
+💡 **Why:** Upon checking native implementations for `ImageModule` on Android, iOS, and Web platforms, all module-level native methods (`loadAsync`, `prefetch`, `clearMemoryCache`, `clearDiskCache`, `configureCache`, `getCachePathAsync`, `generateBlurhashAsync`, `generateThumbhashAsync`) have already been added and properly declared in `ImageNativeModule`. The TODO is therefore stale and removing it prevents confusion and improves the readability and accuracy of the code.
+✅ **Verification:** Ran `yarn --cwd packages/expo-image lint` and `yarn --cwd packages/expo-image test` to confirm there are no syntax or type errors caused by removing this comment. Checked across the implementations in `packages/expo-image/ios/ImageModule.swift`, `packages/expo-image/android/src/main/java/expo/modules/image/ExpoImageModule.kt`, and `packages/expo-image/src/ImageModule.web.ts` to verify no function declaration is missing from the interface.
+✨ **Result:** A cleaner and more accurate type definition file without misleading TODO comments.
