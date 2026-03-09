@@ -315,11 +315,17 @@ export class SQLiteStorage {
    * Removes the values associated with the given keys asynchronously.
    */
   async multiRemove(keys: string[]): Promise<void> {
+    if (keys.length === 0) {
+      return;
+    }
     const db = await this.getDbAsync();
     await db.withExclusiveTransactionAsync(async (tx) => {
-      for (const key of keys) {
-        this.checkValidInput(key);
-        await tx.runAsync(STATEMENT_REMOVE, key);
+      for (let i = 0; i < keys.length; i += 999) {
+        const batch = keys.slice(i, i + 999);
+        batch.forEach((key) => this.checkValidInput(key));
+        const placeholders = batch.map(() => '?').join(', ');
+        const statement = `DELETE FROM storage WHERE key IN (${placeholders});`;
+        await tx.runAsync(statement, ...batch);
       }
     });
   }
