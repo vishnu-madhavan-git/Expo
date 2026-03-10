@@ -24,8 +24,11 @@ export function testNotFound(name: string): boolean {
 }
 
 /** Match `(page)` -> `page` */
+// Match `(page)` -> `page`
+const groupNameRe = /^(?:[^\\()])*?\(([^\\/]+)\)/;
+
 export function matchGroupName(name: string): string | undefined {
-  return name.match(/^(?:[^\\()])*?\(([^\\/]+)\)/)?.[1];
+  return name.match(groupNameRe)?.[1];
 }
 
 /** Match `(app)/(page)` -> `page` */
@@ -68,15 +71,13 @@ export function removeFileSystemDots(filePath: string): string {
 }
 
 export function stripGroupSegmentsFromPath(path: string): string {
-  return path
-    .split('/')
-    .reduce((acc, v) => {
-      if (matchGroupName(v) == null) {
-        acc.push(v);
-      }
-      return acc;
-    }, [] as string[])
-    .join('/');
+  return (
+    path
+      .split('/')
+      // Remove group segments using a pre-compiled regex for performance
+      .filter((v) => !groupNameRe.test(v))
+      .join('/')
+  );
 }
 
 export function stripInvisibleSegmentsFromPath(path: string): string {
