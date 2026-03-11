@@ -1,6 +1,6 @@
 // Copyright © 2024 650 Industries.
 'use client';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useMemo } from 'react';
 import { View } from 'react-native';
 
 import { BlurViewProps } from './BlurView.types';
@@ -9,7 +9,7 @@ import getBackgroundColor from './getBackgroundColor';
 const BlurView = forwardRef<{ setNativeProps: (props: BlurViewProps) => void }, BlurViewProps>(
   ({ tint = 'default', intensity = 50, style, ...props }, ref) => {
     const blurViewRef = useRef<HTMLDivElement>(null);
-    const blurStyle = getBlurStyle({ tint, intensity });
+    const blurStyle = useMemo(() => getBlurStyle({ tint, intensity }), [tint, intensity]);
 
     useImperativeHandle(
       ref,
