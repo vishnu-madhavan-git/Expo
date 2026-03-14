@@ -40,6 +40,10 @@ export function useHeaders(
 ): ImageSource | null | undefined {
   const [objectURL, setObjectURL] = useState<string | null>(null);
   useEffect(() => {
+    let isMounted = true;
+    // We keep track of the object URL created in this effect to clean it up
+    // when the component unmounts or the effect re-runs, preventing a memory leak.
+    let urlToRevoke: string | null = null;
     (async () => {
       if (!source?.headers || !source.uri) {
         return;
@@ -54,16 +58,29 @@ export function useHeaders(
           throw new Error(`Failed to fetch image: ${result.status} ${result.statusText}`);
         }
         const blob = await result.blob();
-        setObjectURL((prevObjURL) => {
-          if (prevObjURL) {
-            URL.revokeObjectURL(prevObjURL);
-          }
-          return URL.createObjectURL(blob);
-        });
+        if (isMounted) {
+          const newUrl = URL.createObjectURL(blob);
+          urlToRevoke = newUrl;
+          setObjectURL((prevObjURL) => {
+            if (prevObjURL) {
+              URL.revokeObjectURL(prevObjURL);
+            }
+            return newUrl;
+          });
+        }
       } catch {
-        onError?.forEach((e) => e?.({ source }));
+        if (isMounted) {
+          onError?.forEach((e) => e?.({ source }));
+        }
       }
     })();
+
+    return () => {
+      isMounted = false;
+      if (urlToRevoke) {
+        URL.revokeObjectURL(urlToRevoke);
+      }
+    };
   }, [source]);
   if (!source?.headers) {
     return source;
