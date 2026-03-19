@@ -1,6 +1,6 @@
 // Copyright © 2024 650 Industries.
 'use client';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 import { View } from 'react-native';
 
 import { BlurViewProps } from './BlurView.types';
@@ -41,10 +41,17 @@ const BlurView = forwardRef<{ setNativeProps: (props: BlurViewProps) => void }, 
       [intensity, tint]
     );
 
+    // [Bolt]: Memoize the combined style array to preserve referential equality.
+    // In React Native Web, passing dynamically computed objects within array literals
+    // to style props (e.g., style={[style, blurStyle]}) breaks referential equality
+    // and causes unnecessary re-renders. Wrapping the combined array in useMemo
+    // prevents this.
+    const combinedStyle = useMemo(() => [style, blurStyle], [style, blurStyle]);
+
     return (
       <View
         {...props}
-        style={[style, blurStyle]}
+        style={combinedStyle}
         /** @ts-expect-error: mismatch in ref type to support manually setting style props. */
         ref={blurViewRef}
       />
