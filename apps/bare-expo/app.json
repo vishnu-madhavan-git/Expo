@@ -73,7 +73,7 @@
         "expo-notifications",
         {
           "icon": "./assets/ic_stat_notifications.png",
-          "color": "#4630EB",
+          "color": "#C41A3B",
           "sounds": ["./assets/notification.wav"]
         }
       ],

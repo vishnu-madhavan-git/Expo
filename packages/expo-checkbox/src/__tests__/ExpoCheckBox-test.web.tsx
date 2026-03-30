@@ -9,13 +9,13 @@ import Checkbox from '../Checkbox';
 
 describe('Checkbox', () => {
   it('renders content matching snapshot', async () => {
-    const wrapper = render(<Checkbox value color="#4630EB" testID="checkbox" />);
+    const wrapper = render(<Checkbox value color="#C41A3B" testID="checkbox" />);
     const view = await wrapper.findAllByTestId('checkbox');
     expect(view).toMatchSnapshot();
   });
 
   it('renders a native checkbox', async () => {
-    const wrapper = render(<Checkbox color="#4630EB" testID="checkbox" />);
+    const wrapper = render(<Checkbox color="#C41A3B" testID="checkbox" />);
     expect(await wrapper.findAllByRole('checkbox')).toHaveLength(1);
   });
 

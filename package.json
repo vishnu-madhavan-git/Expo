@@ -2,7 +2,7 @@
   "name": "@expo/expo",
   "version": "1.4.0",
   "private": true,
-  "author": "Expo",
+  "author": "Nine Ruby (9Ruby)",
   "license": "MIT",
   "scripts": {
     "setup:docs": "./scripts/download-dependencies.sh",

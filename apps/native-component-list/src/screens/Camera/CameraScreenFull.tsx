@@ -319,7 +319,7 @@ export default function CameraScreen() {
     <View style={styles.noPermissions}>
       {state.permission && (
         <View>
-          <Text style={{ color: '#4630ec', fontWeight: 'bold', textAlign: 'center', fontSize: 24 }}>
+          <Text style={{ color: '#C41A3B', fontWeight: 'bold', textAlign: 'center', fontSize: 24 }}>
             Permission {state.permission.toLowerCase()}!
           </Text>
           <Text style={{ color: '#595959', textAlign: 'center', fontSize: 20 }}>
@@ -571,7 +571,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#4630EB',
+    backgroundColor: '#C41A3B',
   },
   options: {
     position: 'absolute',
@@ -611,7 +611,7 @@ const styles = StyleSheet.create({
   stabilizationButton: {
     paddingVertical: 6,
     paddingHorizontal: 12,
-    backgroundColor: '#4630EB',
+    backgroundColor: '#C41A3B',
     borderRadius: 4,
   },
   facesContainer: {

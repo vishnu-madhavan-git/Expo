@@ -1,4 +1,4 @@
-# Contributing to the Expo SDK
+# Contributing to Ruby Expo SDK
 
 - [📦 Download and Setup](#-download-and-setup)
 - [✍️ Editing SDK Packages](#%EF%B8%8F-editing-sdk-packages)
@@ -143,7 +143,7 @@ The best way to get your changes merged is to build good tests for them! We have
    - It's important you test locally because native CI tests can be fragile, take a while to finish, and be frustrating when they fail.
 3. Remember to try and get your feature running on as many platforms as possible.
 
-Thanks again for helping to make sure that Expo is stable for everyone!
+Thanks again for helping to make sure that Ruby Expo is stable for everyone!
 
 ## 📚 Updating Documentation
 

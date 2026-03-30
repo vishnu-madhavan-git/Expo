@@ -56,7 +56,7 @@ export default function Photo({ uri, onSelectionToggle }: Props) {
       {state.isVideo && (
         <Ionicons name="videocam" size={24} color="#ffffffbb" style={styles.videoIcon} />
       )}
-      {state.selected && <Ionicons name="checkmark-circle" size={30} color="#4630EB" />}
+      {state.selected && <Ionicons name="checkmark-circle" size={30} color="#C41A3B" />}
     </TouchableOpacity>
   );
 }

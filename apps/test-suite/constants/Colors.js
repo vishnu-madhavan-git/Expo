@@ -5,7 +5,7 @@ export default {
   [Statuses.Passed]: '#59bb09',
   [Statuses.Failed]: '#f00',
   [Statuses.Disabled]: '#888',
-  tintColor: '#4630EB', // Expo Blue
-  activeTintColor: '#4630ec',
+  tintColor: '#C41A3B', // Ruby Red
+  activeTintColor: '#C41A3B',
   inactiveTintColor: '#595959',
 };

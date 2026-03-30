@@ -29,7 +29,7 @@
       "bundler": "metro"
     },
     "androidStatusBar": {
-      "backgroundColor": "#4630eb"
+      "backgroundColor": "#C41A3B"
     },
     "newArchEnabled": true,
     "android": {
