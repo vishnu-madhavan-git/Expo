@@ -1,4 +1,4 @@
-const tintColor = '#4630ec';
+const tintColor = '#C41A3B';
 
 export default {
   tintColor,
@@ -7,7 +7,7 @@ export default {
   secondaryText: '#666666',
   disabled: '#bbbbbb',
   border: '#cccccc',
-  highlightColor: '#5944ed',
+  highlightColor: '#D4324A',
   tabIconDefault: '#595959',
   tabIconSelected: tintColor,
   tabBar: '#ffffff',

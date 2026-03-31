@@ -153,7 +153,7 @@ export default function CameraScreenLenses() {
     <View style={styles.noPermissions}>
       {state.permission && (
         <View>
-          <Text style={{ color: '#4630ec', fontWeight: 'bold', textAlign: 'center', fontSize: 24 }}>
+          <Text style={{ color: '#C41A3B', fontWeight: 'bold', textAlign: 'center', fontSize: 24 }}>
             Permission {state.permission.toLowerCase()}!
           </Text>
           <Text style={{ color: '#595959', textAlign: 'center', fontSize: 20 }}>

@@ -13,7 +13,7 @@ export default function CheckboxScreen() {
         <Checkbox value={value} onValueChange={setValue} />
       </Section>
       <Section title="Custom Color">
-        <Checkbox value={value} onValueChange={setValue} color="#4630EB" />
+        <Checkbox value={value} onValueChange={setValue} color="#C41A3B" />
       </Section>
       <Section title="Disabled">
         <Checkbox disabled value={value} />

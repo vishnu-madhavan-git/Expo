@@ -1,6 +1,6 @@
-# Expo Documentation
+# Ruby Expo Documentation
 
-This is the public documentation for **Expo**, its SDK, client, and services (**EAS**). This documentation is built using Next.js and you can access it online at https://docs.expo.dev/.
+This is the public documentation for **Ruby Expo**, its SDK, client, and services (**EAS**). This documentation is built using Next.js and you can access it online at https://docs.expo.dev/.
 
 > [!NOTE]
 > For contributors: Please make sure that you edit the docs in the **pages/versions/unversioned** for SDK reference if you want your changes to apply to the next SDK version too!

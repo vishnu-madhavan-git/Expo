@@ -5,7 +5,7 @@ import Checkbox from '../Checkbox';
 
 describe('Checkbox', () => {
   it('renders a native checkbox', () => {
-    render(<Checkbox value color="#4630EB" />);
+    render(<Checkbox value color="#C41A3B" />);
     expect(screen.toJSON()).toMatchInlineSnapshot(`
       <View
         accessibilityRole="checkbox"
@@ -53,8 +53,8 @@ describe('Checkbox', () => {
               "borderColor": "#009688",
             },
             {
-              "backgroundColor": "#4630EB",
-              "borderColor": "#4630EB",
+              "backgroundColor": "#C41A3B",
+              "borderColor": "#C41A3B",
             },
             undefined,
             undefined,

@@ -3,14 +3,14 @@
   "version": "0.0.1",
   "main": "index.js",
   "private": true,
-  "description": "The Expo Go app",
+  "description": "The Ruby Expo Go app",
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
     "start": "expo start --port 80",
     "generate-graphql-code": "graphql-codegen --config graphql-codegen.yml"
   },
-  "author": "Expo",
+  "author": "Nine Ruby (9Ruby)",
   "license": "MIT",
   "jest": {
     "preset": "jest-expo/ios",
