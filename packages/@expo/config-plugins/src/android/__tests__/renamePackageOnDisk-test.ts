@@ -44,24 +44,24 @@ public class SomeClass {
       await renamePackageOnDisk({ android: { package: 'xyz.bront.app' } }, '/myapp');
       const mainActivityPath = '/myapp/android/app/src/main/java/xyz/bront/app/MainActivity.java';
       expect(fs.existsSync(mainActivityPath)).toBeTruthy();
-      expect(fs.readFileSync(mainActivityPath).toString()).toMatch('package xyz.bront.app');
+      expect(fs.readFileSync(mainActivityPath, 'utf8')).toMatch('package xyz.bront.app');
 
       const nestedClassPath =
         '/myapp/android/app/src/main/java/xyz/bront/app/example/SomeClass.java';
       expect(fs.existsSync(nestedClassPath)).toBeTruthy();
-      expect(fs.readFileSync(nestedClassPath).toString()).toMatch('package xyz.bront.app');
-      expect(fs.readFileSync(nestedClassPath).toString()).not.toMatch('com.lololol');
+      expect(fs.readFileSync(nestedClassPath, 'utf8')).toMatch('package xyz.bront.app');
+      expect(fs.readFileSync(nestedClassPath, 'utf8')).not.toMatch('com.lololol');
 
       const buckPath = '/myapp/android/app/BUCK';
-      expect(fs.readFileSync(buckPath).toString()).toMatch('package = "xyz.bront.app"');
-      expect(fs.readFileSync(buckPath).toString()).not.toMatch('com.lololol');
+      expect(fs.readFileSync(buckPath, 'utf8')).toMatch('package = "xyz.bront.app"');
+      expect(fs.readFileSync(buckPath, 'utf8')).not.toMatch('com.lololol');
     });
 
     it('does not clobber itself if package has similar parts', async () => {
       await renamePackageOnDisk({ android: { package: 'com.bront' } }, '/myapp');
       const mainActivityPath = '/myapp/android/app/src/main/java/com/bront/MainActivity.java';
       expect(fs.existsSync(mainActivityPath)).toBeTruthy();
-      expect(fs.readFileSync(mainActivityPath).toString()).toMatch('package com.bront');
+      expect(fs.readFileSync(mainActivityPath, 'utf8')).toMatch('package com.bront');
     });
   });
 });
