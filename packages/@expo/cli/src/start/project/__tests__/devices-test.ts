@@ -26,7 +26,7 @@ describe('devices info', () => {
     const file = path.join(projectRoot, '.expo', 'devices.json');
     expect(fs.existsSync(file)).toBe(true);
 
-    const { devices } = JSON.parse(fs.readFileSync(file, 'utf8').toString());
+    const { devices } = JSON.parse(fs.readFileSync(file, 'utf8'));
     expect(devices.length).toBe(1);
     expect(devices[0].installationId).toBe('test-device-id');
   });
