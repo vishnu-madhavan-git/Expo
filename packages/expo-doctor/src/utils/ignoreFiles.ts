@@ -65,29 +65,45 @@ export async function parseIgnoreFiles(root = process.cwd()): Promise<IgnoreFile
   };
   // We check for ignore files up until the repository root
   const parentRoot = await getRootPathAsync(root);
+  // ⚡ Bolt: Optimize by collecting target paths first and reading all potential ignore files
+  // concurrently using Promise.all to reduce I/O latency, especially in deep directory structures.
+  const targetDirs: string[] = [];
   for (let dir = root; path.dirname(dir) !== dir; dir = path.dirname(dir)) {
-    // Each directory is checked for all ignore filenames and categorised
-    for (const key in ignoreFileNames) {
-      const ignoreKey = key as keyof IgnoreFiles;
+    targetDirs.push(dir);
+    if (dir === parentRoot) break;
+  }
+
+  const ignoreKeys = Object.keys(ignoreFileNames) as (keyof IgnoreFiles)[];
+  const fileReads = targetDirs.flatMap((dir) =>
+    ignoreKeys.map(async (ignoreKey) => {
       const ignoreFileName = ignoreFileNames[ignoreKey];
       const ignoreFilePath = path.resolve(dir, ignoreFileName);
       try {
         const contents = await fs.promises.readFile(ignoreFilePath, 'utf8');
-        if (contents) {
-          // If we find an ignore file, we parse it and store its dirname
-          debug(`Found ${ignoreFileName} file: ${ignoreFilePath}`);
-          const ignoreFile = ignore({ allowRelativePaths: true }).add(contents);
-          result[ignoreKey].push({
-            fromPath: dir,
-            filter: ignoreFile.createFilter(),
-          });
-        }
+        return { ignoreKey, dir, ignoreFileName, ignoreFilePath, contents };
       } catch {
-        // ignore if file can't be read
+        return { ignoreKey, dir, ignoreFileName, ignoreFilePath, contents: null };
       }
+    })
+  );
+
+  // ⚡ Bolt: Concurrent reads for O(1) latency instead of O(N).
+  // Promise.all preserves the original array order, which correctly maintains the hierarchy-based
+  // precedence when processing the contents later.
+  const readResults = await Promise.all(fileReads);
+
+  for (const { ignoreKey, dir, ignoreFileName, ignoreFilePath, contents } of readResults) {
+    if (contents) {
+      // If we find an ignore file, we parse it and store its dirname
+      debug(`Found ${ignoreFileName} file: ${ignoreFilePath}`);
+      const ignoreFile = ignore({ allowRelativePaths: true }).add(contents);
+      result[ignoreKey].push({
+        fromPath: dir,
+        filter: ignoreFile.createFilter(),
+      });
     }
-    if (dir === parentRoot) break;
   }
+
   const makeIgnoreCheck = (ignores: IgnoreFile[]) => {
     if (ignores.length === 0) {
       return undefined;
