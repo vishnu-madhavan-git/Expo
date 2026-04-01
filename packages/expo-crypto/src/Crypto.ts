@@ -78,12 +78,13 @@ function assertByteCount(value: any, methodName: string): void {
   }
 }
 
+const CRYPTO_DIGEST_ALGORITHM_VALUES = Object.values(CryptoDigestAlgorithm);
 function assertAlgorithm(algorithm: CryptoDigestAlgorithm): void {
-  if (!Object.values(CryptoDigestAlgorithm).includes(algorithm)) {
+  if (!CRYPTO_DIGEST_ALGORITHM_VALUES.includes(algorithm)) {
     throw new CryptoError(
       `Invalid algorithm provided. Expected one of: CryptoDigestAlgorithm.${Object.keys(
         CryptoDigestAlgorithm
-      ).join(', AlgCryptoDigestAlgorithmorithm.')}`
+      ).join(', CryptoDigestAlgorithm.')}`
     );
   }
 }
@@ -94,8 +95,9 @@ function assertData(data: string): void {
   }
 }
 
+const CRYPTO_ENCODING_VALUES = Object.values(CryptoEncoding);
 function assertEncoding(encoding: CryptoEncoding): void {
-  if (!Object.values(CryptoEncoding).includes(encoding)) {
+  if (!CRYPTO_ENCODING_VALUES.includes(encoding)) {
     throw new CryptoError(
       `Invalid encoding provided. Expected one of: CryptoEncoding.${Object.keys(
         CryptoEncoding
