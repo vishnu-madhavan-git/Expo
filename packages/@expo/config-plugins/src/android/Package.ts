@@ -125,7 +125,8 @@ export async function renameJniOnDiskForType({
   filesToUpdate.forEach((filepath: string) => {
     try {
       if (fs.lstatSync(filepath).isFile() && ['.h', '.cpp'].includes(path.extname(filepath))) {
-        let contents = fs.readFileSync(filepath).toString();
+        // Optimization: Pass encoding directly to readFileSync to avoid unnecessary Buffer allocation
+        let contents = fs.readFileSync(filepath, 'utf8');
         contents = contents.replace(
           new RegExp(transformJavaClassDescriptor(currentPackageName).replace(/\//g, '\\/'), 'g'),
           transformJavaClassDescriptor(packageName)
@@ -207,7 +208,8 @@ export async function renamePackageOnDiskForType({
   filesToUpdate.forEach((filepath: string) => {
     try {
       if (fs.lstatSync(filepath).isFile()) {
-        let contents = fs.readFileSync(filepath).toString();
+        // Optimization: Pass encoding directly to readFileSync to avoid unnecessary Buffer allocation
+        let contents = fs.readFileSync(filepath, 'utf8');
         if (path.extname(filepath) === '.kt') {
           contents = replacePackageName(contents, currentPackageName, kotlinSanitizedPackageName);
         } else {
