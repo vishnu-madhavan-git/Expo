@@ -65,28 +65,55 @@ export async function parseIgnoreFiles(root = process.cwd()): Promise<IgnoreFile
   };
   // We check for ignore files up until the repository root
   const parentRoot = await getRootPathAsync(root);
+
+  // Collect all paths to check first
+  const dirsToCheck: string[] = [];
   for (let dir = root; path.dirname(dir) !== dir; dir = path.dirname(dir)) {
-    // Each directory is checked for all ignore filenames and categorised
+    dirsToCheck.push(dir);
+    if (dir === parentRoot) break;
+  }
+
+  // Define a type for our read tasks
+  type ReadTaskResult = {
+    dir: string;
+    ignoreKey: keyof IgnoreFiles;
+    contents: string | null;
+  };
+
+  const readTasks: Promise<ReadTaskResult>[] = [];
+
+  // Create tasks for reading all possible ignore files
+  for (const dir of dirsToCheck) {
     for (const key in ignoreFileNames) {
       const ignoreKey = key as keyof IgnoreFiles;
       const ignoreFileName = ignoreFileNames[ignoreKey];
       const ignoreFilePath = path.resolve(dir, ignoreFileName);
-      try {
-        const contents = await fs.promises.readFile(ignoreFilePath, 'utf8');
-        if (contents) {
-          // If we find an ignore file, we parse it and store its dirname
-          debug(`Found ${ignoreFileName} file: ${ignoreFilePath}`);
-          const ignoreFile = ignore({ allowRelativePaths: true }).add(contents);
-          result[ignoreKey].push({
-            fromPath: dir,
-            filter: ignoreFile.createFilter(),
-          });
-        }
-      } catch {
-        // ignore if file can't be read
-      }
+
+      const task = fs.promises
+        .readFile(ignoreFilePath, 'utf8')
+        .then((contents) => ({ dir, ignoreKey, contents }))
+        .catch(() => ({ dir, ignoreKey, contents: null }));
+
+      readTasks.push(task);
     }
-    if (dir === parentRoot) break;
+  }
+
+  // Wait for all reads to complete concurrently
+  const readResults = await Promise.all(readTasks);
+
+  // Process results in the original order to preserve hierarchy precedence
+  for (const { dir, ignoreKey, contents } of readResults) {
+    if (contents) {
+      const ignoreFileName = ignoreFileNames[ignoreKey];
+      const ignoreFilePath = path.resolve(dir, ignoreFileName);
+
+      debug(`Found ${ignoreFileName} file: ${ignoreFilePath}`);
+      const ignoreFile = ignore({ allowRelativePaths: true }).add(contents);
+      result[ignoreKey].push({
+        fromPath: dir,
+        filter: ignoreFile.createFilter(),
+      });
+    }
   }
   const makeIgnoreCheck = (ignores: IgnoreFile[]) => {
     if (ignores.length === 0) {
