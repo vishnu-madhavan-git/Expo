@@ -41,7 +41,8 @@ async function runAsync(maybeProjectDirectory?: string): Promise<void> {
       process.exit(1);
     }
 
-    const jsonData = JSON.parse(readFileSync(packageJsonPath).toString());
+    // Optimization: Pass encoding directly to readFileSync to avoid unnecessary Buffer allocation
+    const jsonData = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
     const hasExpoPackage = jsonData.dependencies?.hasOwnProperty('expo');
 
     if (hasExpoPackage) {
