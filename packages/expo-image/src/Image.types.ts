@@ -786,7 +786,6 @@ export declare class ImageRef extends SharedRef<'image'> {
  * @hidden
  */
 export declare class ImageNativeModule extends NativeModule {
-  // TODO: Add missing function declarations
   Image: typeof ImageRef;
 
   loadAsync(source: ImageSource, options?: ImageLoadOptions): Promise<ImageRef>;
