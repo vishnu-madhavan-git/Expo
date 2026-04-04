@@ -41,7 +41,8 @@ async function runAsync(maybeProjectDirectory?: string): Promise<void> {
       process.exit(1);
     }
 
-    const jsonData = JSON.parse(readFileSync(packageJsonPath).toString());
+    // ⚡ Bolt Optimization: Use 'utf8' encoding to prevent unnecessary intermediate Buffer allocations
+    const jsonData = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
     const hasExpoPackage = jsonData.dependencies?.hasOwnProperty('expo');
 
     if (hasExpoPackage) {
