@@ -38,11 +38,15 @@ export async function stopAdbReverseAsync(ports: number[]): Promise<void> {
   removeExitHook?.();
 
   const devices = await getAttachedDevicesAsync();
+
+  const promises: Promise<boolean>[] = [];
   for (const device of devices) {
     for (const port of ports) {
-      await adbReverseRemoveAsync(device, port);
+      promises.push(adbReverseRemoveAsync(device, port));
     }
   }
+
+  await Promise.all(promises);
 }
 
 async function adbReverseAsync(device: Device, port: number): Promise<boolean> {

@@ -1,0 +1,3 @@
+## 2024-11-20 - Concurrent Port Reversals with adb
+**Learning:** In `@expo/cli`, stopping ADB port reversals sequentially using a nested loop (`device` -> `port` -> `await adbReverseRemoveAsync`) introduces unnecessary blocking when handling multiple ports across multiple devices. The I/O calls to `adb` can be dispatched concurrently.
+**Action:** Replaced sequential awaits in `stopAdbReverseAsync` with an array of Promises wrapped in `Promise.all()`, so all reversals happen concurrently across devices and ports. This reduces the time to un-forward ports and speeds up process exit/cleanup times without negatively impacting the system or breaking expected behavior.
