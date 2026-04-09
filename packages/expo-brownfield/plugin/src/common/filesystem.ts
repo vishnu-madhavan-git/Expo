@@ -25,14 +25,16 @@ const interpolateVariables = (str: string, variables: Record<string, unknown>): 
 const maybeReadOverwrittenTemplate = (template: string, platform?: PlatformString): string => {
   try {
     accessSync(path.join(process.cwd(), '.brownfield-templates'));
+    // ⚡ Bolt Optimization: Pass 'utf8' encoding directly to avoid unnecessary intermediate buffer allocation
     if (existsSync(path.join(process.cwd(), '.brownfield-templates', template))) {
-      return readFileSync(path.join(process.cwd(), '.brownfield-templates', template)).toString();
+      return readFileSync(path.join(process.cwd(), '.brownfield-templates', template), 'utf8');
     }
 
     if (existsSync(path.join(process.cwd(), '.brownfield-templates', platform ?? '.', template))) {
       return readFileSync(
-        path.join(process.cwd(), '.brownfield-templates', platform ?? '.', template)
-      ).toString();
+        path.join(process.cwd(), '.brownfield-templates', platform ?? '.', template),
+        'utf8'
+      );
     }
     // eslint-disable-next-line no-empty
   } catch {}
@@ -55,7 +57,8 @@ const readTemplate = (template: string, platform?: PlatformString): string => {
     throw new Error(`Template ${template} doesn't exist at ${templatePath}`);
   }
 
-  return readFileSync(templatePath).toString();
+  // ⚡ Bolt Optimization: Pass 'utf8' encoding directly to avoid unnecessary intermediate buffer allocation
+  return readFileSync(templatePath, 'utf8');
 };
 
 const createFileFromTemplateInternal = (
