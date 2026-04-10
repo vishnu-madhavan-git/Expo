@@ -35,8 +35,8 @@ export function mergeGitIgnorePaths(
     return null;
   }
 
-  const targetGitIgnore = fs.readFileSync(targetGitIgnorePath).toString();
-  const sourceGitIgnore = fs.readFileSync(sourceGitIgnorePath).toString();
+  const targetGitIgnore = fs.readFileSync(targetGitIgnorePath, 'utf8');
+  const sourceGitIgnore = fs.readFileSync(sourceGitIgnorePath, 'utf8');
   const merged = mergeGitIgnoreContents(targetGitIgnore, sourceGitIgnore);
   // Only rewrite the file if it was modified.
   if (merged.contents) {
