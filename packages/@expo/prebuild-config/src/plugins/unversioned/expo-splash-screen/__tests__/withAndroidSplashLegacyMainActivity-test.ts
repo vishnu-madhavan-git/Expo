@@ -28,7 +28,7 @@ describe(setSplashScreenLegacyMainActivity, () => {
       },
     };
     const mainActivity = await AndroidConfig.Paths.getMainActivityAsync('/app');
-    let contents = fs.readFileSync(mainActivity.path).toString();
+    let contents = fs.readFileSync(mainActivity.path, 'utf8');
     contents = await setSplashScreenLegacyMainActivity(
       exp,
       { backgroundColor: '#000020', resizeMode: 'native' },

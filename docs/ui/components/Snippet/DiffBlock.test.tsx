@@ -9,7 +9,7 @@ import { DiffBlock } from '.';
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const DIFF_PATH = '/static/diffs/expo-ios.diff';
-const DIFF_CONTENT = fs.readFileSync(path.join(dirname, '../../../public', DIFF_PATH)).toString();
+const DIFF_CONTENT = fs.readFileSync(path.join(dirname, '../../../public', DIFF_PATH), 'utf8');
 
 const validateDiffContent = (screen: Screen) => {
   expect(screen.getByText('ios/Podfile')).toBeInTheDocument();
