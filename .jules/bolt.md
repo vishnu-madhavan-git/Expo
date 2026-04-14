@@ -1,0 +1,3 @@
+## 2025-04-14 - Replace readFileSync toString with utf8 encoding
+**Learning:** In Node.js when reading files synchronously, reading it without encoding returns a Buffer which then converted to string with `.toString()` creates unnecessary intermediate memory allocations. When converting this using regex, you have to be careful as some files were already passing 'utf8' but still calling `.toString()`, which could result in invalid code like `readFileSync(file, 'utf8', 'utf8')`.
+**Action:** Use specific regex matching or AST parsers to replace `.toString()` cleanly, ensuring that we either append `'utf8'` correctly or just strip the `.toString()` if the encoding was already provided.
