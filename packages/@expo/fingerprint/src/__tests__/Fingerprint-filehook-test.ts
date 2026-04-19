@@ -96,7 +96,7 @@ describe('FileHookTransform', () => {
 
   it('should call hook function from createFingerprintAsync', async () => {
     vol.fromJSON(require('../sourcer/__tests__/fixtures/ExpoManaged47Project.json'));
-    const packageJson = JSON.parse(vol.readFileSync('/app/package.json', 'utf8').toString());
+    const packageJson = JSON.parse(vol.readFileSync('/app/package.json', 'utf8') as string);
     jest.doMock('/app/package.json', () => packageJson, { virtual: true });
     const options = await normalizeOptionsAsync('/app', { fileHookTransform: mockHook });
     await createFingerprintAsync('/app', options);
@@ -121,7 +121,7 @@ describe('FileHookTransform', () => {
         }
       ) as jest.MockedFunction<FileHookTransformFunction>;
     vol.fromJSON(require('../sourcer/__tests__/fixtures/ExpoManaged47Project.json'));
-    const packageJson = JSON.parse(vol.readFileSync('/app/package.json', 'utf8').toString());
+    const packageJson = JSON.parse(vol.readFileSync('/app/package.json', 'utf8') as string);
     jest.doMock('/app/package.json', () => packageJson, { virtual: true });
     const options = await normalizeOptionsAsync('/app', { fileHookTransform: mockExpoConfigHook });
     const result = await createFingerprintAsync('/app', options);
