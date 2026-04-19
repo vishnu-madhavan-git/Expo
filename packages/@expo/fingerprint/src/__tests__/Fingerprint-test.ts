@@ -73,6 +73,36 @@ describe(diffFingerprintChangesAsync, () => {
       [
         {
           "addedSource": {
+            "contents": "{"extraDependencies":[],"coreFeatures":[],"modules":[]}",
+            "debugInfo": {
+              "hash": "10c4144650e3af1f596683ac4ae7a6fd971f7447",
+            },
+            "hash": "10c4144650e3af1f596683ac4ae7a6fd971f7447",
+            "id": "expoAutolinkingConfig:android",
+            "reasons": [
+              "expoAutolinkingAndroid",
+            ],
+            "type": "contents",
+          },
+          "op": "added",
+        },
+        {
+          "addedSource": {
+            "contents": "{"extraDependencies":[],"coreFeatures":[],"modules":[]}",
+            "debugInfo": {
+              "hash": "10c4144650e3af1f596683ac4ae7a6fd971f7447",
+            },
+            "hash": "10c4144650e3af1f596683ac4ae7a6fd971f7447",
+            "id": "expoAutolinkingConfig:ios",
+            "reasons": [
+              "expoAutolinkingIos",
+            ],
+            "type": "contents",
+          },
+          "op": "added",
+        },
+        {
+          "addedSource": {
             "contents": "{"android":{"adaptiveIcon":{"backgroundColor":"#FFFFFF","foregroundImage":"./assets/adaptive-icon.png"}},"assetBundlePatterns":["**/*"],"icon":"./assets/icon.png","ios":{"supportsTablet":true},"name":"sdk47","orientation":"portrait","platforms":["android","ios","web"],"slug":"sdk47","splash":{"backgroundColor":"#ffffff","image":"./assets/splash.png","resizeMode":"contain"},"updates":{"fallbackToCacheTimeout":0},"userInterfaceStyle":"light","version":"1.0.0","web":{"favicon":"./assets/favicon.png"}}",
             "debugInfo": {
               "hash": "33b2b95de3b0b474810630e51527a2c0a6e5de9c",
@@ -86,13 +116,58 @@ describe(diffFingerprintChangesAsync, () => {
           },
           "op": "added",
         },
+        {
+          "addedSource": {
+            "contents": "{"setup:docs":"./scripts/download-dependencies.sh","setup:native":"./scripts/download-dependencies.sh && ./scripts/setup-react-android.sh","postinstall":"yarn-deduplicate && yarn workspace @expo/cli prepare && patch-package && node ./tools/bin/expotools.js validate-workspace-dependencies","install:react-native-lab":"(([ \\"$(ls -A react-native-lab/react-native)\\" ] && (yarn --cwd react-native-lab/react-native install --frozen-lockfile || true)) || echo \\"Skipping installing Node modules in react-native-lab/react-native (directory empty)\\")","lint":"eslint .","tsc":"echo 'You are trying to run \\"tsc\\" in the workspace root. Run it from an individual package instead.' && exit 1"}",
+            "debugInfo": {
+              "hash": "c4f835988805180a373d4ff37cef6ce53cb14995",
+            },
+            "hash": "c4f835988805180a373d4ff37cef6ce53cb14995",
+            "id": "packageJson:scripts",
+            "reasons": [
+              "packageJson:scripts",
+            ],
+            "type": "contents",
+          },
+          "op": "added",
+        },
+        {
+          "addedSource": {
+            "contents": "{}",
+            "debugInfo": {
+              "hash": "bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f",
+            },
+            "hash": "bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f",
+            "id": "rncoreAutolinkingConfig:android",
+            "reasons": [
+              "rncoreAutolinkingAndroid",
+            ],
+            "type": "contents",
+          },
+          "op": "added",
+        },
+        {
+          "addedSource": {
+            "contents": "{}",
+            "debugInfo": {
+              "hash": "bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f",
+            },
+            "hash": "bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f",
+            "id": "rncoreAutolinkingConfig:ios",
+            "reasons": [
+              "rncoreAutolinkingIos",
+            ],
+            "type": "contents",
+          },
+          "op": "added",
+        },
       ]
     `);
   });
 
   it('should return diff from contents changes', async () => {
     vol.fromJSON(require('../sourcer/__tests__/fixtures/ExpoManaged47Project.json'));
-    const packageJson = JSON.parse(vol.readFileSync('/app/package.json', 'utf8').toString());
+    const packageJson = JSON.parse(vol.readFileSync('/app/package.json', 'utf8') as string);
     jest.doMock('/app/package.json', () => packageJson, { virtual: true });
     const fingerprint = await createFingerprintAsync(
       '/app',
@@ -158,7 +233,7 @@ describe(diffFingerprintChangesAsync, () => {
       '/app',
       await normalizeOptionsAsync('/app', { debug: true })
     );
-    const config = JSON.parse(vol.readFileSync('/app/app.json', 'utf8').toString());
+    const config = JSON.parse(vol.readFileSync('/app/app.json', 'utf8') as string);
     config.expo.jsEngine = 'jsc';
     vol.writeFileSync('/app/app.json', JSON.stringify(config, null, 2));
     const diff = await diffFingerprintChangesAsync(

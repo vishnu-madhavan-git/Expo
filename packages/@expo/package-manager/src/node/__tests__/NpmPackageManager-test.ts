@@ -263,7 +263,7 @@ describe('NpmPackageManager', () => {
       await npm.addAsync(['expo@^46', 'react-native@0.69.3']);
 
       const packageFile = JSON.parse(
-        vol.readFileSync(path.join(projectRoot, 'package.json')).toString()
+        vol.readFileSync(path.join(projectRoot, 'package.json'), 'utf8') as string
       );
 
       expect(packageFile).toHaveProperty(
@@ -284,7 +284,7 @@ describe('NpmPackageManager', () => {
       await npm.addAsync(['expo@^46', 'react-native@0.69.3', 'jest', '--ignore-scripts']);
 
       const packageFile = JSON.parse(
-        vol.readFileSync(path.join(projectRoot, 'package.json')).toString()
+        vol.readFileSync(path.join(projectRoot, 'package.json'), 'utf8') as string
       );
 
       expect(packageFile).toHaveProperty(
@@ -305,7 +305,7 @@ describe('NpmPackageManager', () => {
       await npm.addAsync(['react-native@0.69.3', 'expo@next']);
 
       const packageFile = JSON.parse(
-        vol.readFileSync(path.join(projectRoot, 'package.json')).toString()
+        vol.readFileSync(path.join(projectRoot, 'package.json'), 'utf8') as string
       );
 
       expect(packageFile).toHaveProperty(
@@ -327,7 +327,7 @@ describe('NpmPackageManager', () => {
       await npm.addAsync(['zebra@^1.0.0', 'Alpha@^2.0.0', 'beta@^3.0.0', 'Gamma@^4.0.0']);
 
       const packageFile = JSON.parse(
-        vol.readFileSync(path.join(projectRoot, 'package.json')).toString()
+        vol.readFileSync(path.join(projectRoot, 'package.json'), 'utf8') as string
       );
 
       const dependencyKeys = Object.keys(packageFile.dependencies);
@@ -384,7 +384,7 @@ describe('NpmPackageManager', () => {
       await npm.addDevAsync(['expo@^46', 'react-native@0.69.3']);
 
       const packageFile = JSON.parse(
-        vol.readFileSync(path.join(projectRoot, 'package.json')).toString()
+        vol.readFileSync(path.join(projectRoot, 'package.json'), 'utf8') as string
       );
 
       expect(packageFile).toHaveProperty(
@@ -405,7 +405,7 @@ describe('NpmPackageManager', () => {
       await npm.addDevAsync(['expo@^46', 'react-native@0.69.3', 'jest', '--ignore-scripts']);
 
       const packageFile = JSON.parse(
-        vol.readFileSync(path.join(projectRoot, 'package.json')).toString()
+        vol.readFileSync(path.join(projectRoot, 'package.json'), 'utf8') as string
       );
 
       expect(packageFile).toHaveProperty(
@@ -426,7 +426,7 @@ describe('NpmPackageManager', () => {
       await npm.addDevAsync(['react-native@0.69.3', 'expo@next']);
 
       const packageFile = JSON.parse(
-        vol.readFileSync(path.join(projectRoot, 'package.json')).toString()
+        vol.readFileSync(path.join(projectRoot, 'package.json'), 'utf8') as string
       );
 
       expect(packageFile).toHaveProperty(

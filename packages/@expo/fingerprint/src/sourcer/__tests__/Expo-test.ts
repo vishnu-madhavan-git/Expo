@@ -184,7 +184,7 @@ describe(getExpoConfigSourcesAsync, () => {
 
   it('should contain expo config', async () => {
     vol.fromJSON(require('./fixtures/ExpoManaged47Project.json'));
-    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8').toString());
+    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8') as string);
     const options = await normalizeOptionsAsync('/app');
     const { config, loadedModules } = await getExpoConfigAsync('/app', options);
     const sources = await getExpoConfigSourcesAsync('/app', config, loadedModules, options);
@@ -192,7 +192,7 @@ describe(getExpoConfigSourcesAsync, () => {
       (source): source is HashSourceContents =>
         source.type === 'contents' && source.id === 'expoConfig'
     );
-    const expoConfig = JSON.parse(expoConfigSource?.contents?.toString() ?? 'null');
+    const expoConfig = JSON.parse((expoConfigSource?.contents as string) ?? 'null');
     expect(expoConfig).not.toBeNull();
     expect(expoConfig.name).toEqual(appJson.expo.name);
   });
@@ -203,7 +203,7 @@ describe(getExpoConfigSourcesAsync, () => {
     const { config, loadedModules } = await getExpoConfigAsync('/app', options);
     const sources = await getExpoConfigSourcesAsync('/app', config, loadedModules, options);
 
-    const appJsonContents = vol.readFileSync('/app/app.json', 'utf8').toString();
+    const appJsonContents = vol.readFileSync('/app/app.json', 'utf8') as string;
     const appJson = JSON.parse(appJsonContents);
     const { name } = appJson.expo;
     // Re-insert name to change the object order
@@ -225,7 +225,7 @@ describe(getExpoConfigSourcesAsync, () => {
 
   it('should transform expo config paths as relative paths', async () => {
     vol.fromJSON(require('./fixtures/ExpoManaged47Project.json'));
-    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8').toString());
+    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8') as string);
     appJson.expo.extra ||= {};
     appJson.expo.extra.testFile = '/app/test-file.txt';
     appJson.expo.extra.testNestedFile = '/app/nested/test-file.txt';
@@ -237,7 +237,7 @@ describe(getExpoConfigSourcesAsync, () => {
       (source): source is HashSourceContents =>
         source.type === 'contents' && source.id === 'expoConfig'
     );
-    const expoConfig = JSON.parse(expoConfigSource?.contents?.toString() ?? 'null');
+    const expoConfig = JSON.parse((expoConfigSource?.contents as string) ?? 'null');
     expect(expoConfig.extra.testFile).toBe('test-file.txt');
     expect(expoConfig.extra.testNestedFile).toBe('nested/test-file.txt');
   });
@@ -263,7 +263,7 @@ describe(getExpoConfigSourcesAsync, () => {
     vol.writeFileSync('/app/assets/icon-light.png', 'PNG data');
     vol.writeFileSync('/app/assets/icon-dark.png', 'PNG data');
     vol.writeFileSync('/app/assets/icon-tinted.png', 'PNG data');
-    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8').toString());
+    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8') as string);
     appJson.expo.ios ||= {};
     appJson.expo.ios.icon = {
       light: '/app/assets/icon-light.png',
@@ -299,7 +299,7 @@ describe(getExpoConfigSourcesAsync, () => {
     vol.fromJSON(require('./fixtures/ExpoManaged47Project.json'));
     vol.mkdirSync('/app/assets');
     copyDirSync(path.join(__dirname, 'fixtures', 'ExpoGo.icon'), '/app/assets/ExpoGo.icon');
-    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8').toString());
+    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8') as string);
     appJson.expo.ios ||= {};
     appJson.expo.ios.icon = '/app/assets/ExpoGo.icon';
     vol.writeFileSync('/app/app.json', JSON.stringify(appJson, null, 2));
@@ -319,7 +319,7 @@ describe(getExpoConfigSourcesAsync, () => {
   it('should contain external google service files with override hash key', async () => {
     vol.fromJSON(require('./fixtures/ExpoManaged47Project.json'));
     vol.writeFileSync('/app/google-services.json', 'JSON data');
-    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8').toString());
+    const appJson = JSON.parse(vol.readFileSync('/app/app.json', 'utf8') as string);
     appJson.expo.android ||= {};
     appJson.expo.android.googleServicesFile = '/app/google-services.json';
     vol.writeFileSync('/app/app.json', JSON.stringify(appJson, null, 2));
@@ -342,7 +342,7 @@ describe(getExpoConfigSourcesAsync, () => {
     vol.writeFileSync('/app/assets/images/splash-icon.png', 'PNG data');
 
     const config = {
-      exp: JSON.parse(vol.readFileSync('/app/app.json', 'utf8').toString()).expo,
+      exp: JSON.parse(vol.readFileSync('/app/app.json', 'utf8') as string).expo,
     };
     const configResult = JSON.stringify({ config, loadedModules: [] });
     const mockSpawnWithIpcAsync = spawnWithIpcAsync as jest.MockedFunction<
@@ -435,7 +435,7 @@ describe(`getExpoConfigSourcesAsync - sourceSkips`, () => {
         (source): source is HashSourceContents =>
           source.type === 'contents' && source.id === 'expoConfig'
       );
-      const expoConfig = JSON.parse(expoConfigSource?.contents?.toString() ?? 'null');
+      const expoConfig = JSON.parse((expoConfigSource?.contents as string) ?? 'null');
       expect(expoConfig).not.toBeNull();
       expect(expoConfig.version).toBeUndefined();
       expect(expoConfig.android.versionCode).toBeUndefined();
@@ -471,7 +471,7 @@ module.exports = config;
         (source): source is HashSourceContents =>
           source.type === 'contents' && source.id === 'expoConfig'
       );
-      const expoConfig = JSON.parse(expoConfigSource?.contents?.toString() ?? 'null');
+      const expoConfig = JSON.parse((expoConfigSource?.contents as string) ?? 'null');
       expect(expoConfig).not.toBeNull();
       expect(expoConfig.version).toBeUndefined();
       expect(expoConfig.android.versionCode).toBeUndefined();
@@ -509,7 +509,7 @@ module.exports = config;
         (source): source is HashSourceContents =>
           source.type === 'contents' && source.id === 'expoConfig'
       );
-      const expoConfig = JSON.parse(expoConfigSource?.contents?.toString() ?? 'null');
+      const expoConfig = JSON.parse((expoConfigSource?.contents as string) ?? 'null');
       expect(expoConfig).not.toBeNull();
       expect(expoConfig.version).toBeUndefined();
       expect(expoConfig.android.versionCode).toBeUndefined();
@@ -540,7 +540,7 @@ module.exports = config;
         (source): source is HashSourceContents =>
           source.type === 'contents' && source.id === 'expoConfig'
       );
-      const expoConfig = JSON.parse(expoConfigSource?.contents?.toString() ?? 'null');
+      const expoConfig = JSON.parse((expoConfigSource?.contents as string) ?? 'null');
       expect(expoConfig).not.toBeNull();
       expect(expoConfig.runtimeVersion).toBeUndefined();
       expect(expoConfig.android.runtimeVersion).toBeUndefined();
@@ -570,7 +570,7 @@ module.exports = config;
         (source): source is HashSourceContents =>
           source.type === 'contents' && source.id === 'expoConfig'
       );
-      const expoConfig = JSON.parse(expoConfigSource?.contents?.toString() ?? 'null');
+      const expoConfig = JSON.parse((expoConfigSource?.contents as string) ?? 'null');
       expect(expoConfig).not.toBeNull();
       expect(expoConfig.runtimeVersion).toMatchObject({ policy: 'test' });
       expect(expoConfig.android.runtimeVersion).toMatchObject({ policy: 'test' });
