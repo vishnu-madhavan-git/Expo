@@ -143,7 +143,7 @@ export async function parseNativePackageClassNameAsync(
   for await (const entry of scanFilesRecursively(androidDir, undefined, true)) {
     if (entry.name.endsWith('Package.java') || entry.name.endsWith('Package.kt')) {
       try {
-        const contents = await fs.readFile(entry.path);
+        const contents = await fs.readFile(entry.path, 'utf8');
         const matched = matchNativePackageClassName(entry.path, contents);
         if (matched) {
           return matched;
@@ -162,7 +162,7 @@ export async function parseNativePackageClassNameAsync(
   // Search all **/*.{java,kt} files
   for await (const entry of scanFilesRecursively(androidDir, undefined, true)) {
     if (entry.name.endsWith('.java') || entry.name.endsWith('.kt')) {
-      const contents = await fs.readFile(entry.path);
+      const contents = await fs.readFile(entry.path, 'utf8');
       const matched = matchNativePackageClassName(entry.path, contents);
       if (matched) {
         return matched;
@@ -174,15 +174,15 @@ export async function parseNativePackageClassNameAsync(
 
 let lazyReactPackageRegex: RegExp | null = null;
 let lazyTurboReactPackageRegex: RegExp | null = null;
-export function matchNativePackageClassName(_filePath: string, contents: Buffer): string | null {
-  const fileContents = contents.toString();
+export function matchNativePackageClassName(_filePath: string, contents: string): string | null {
+
 
   // [0] Match ReactPackage
   if (!lazyReactPackageRegex) {
     lazyReactPackageRegex =
       /class\s+(\w+[^(\s]*)[\s\w():]*(\s+implements\s+|:)[\s\w():,]*[^{]*ReactPackage/;
   }
-  const matchReactPackage = fileContents.match(lazyReactPackageRegex);
+  const matchReactPackage = contents.match(lazyReactPackageRegex);
   if (matchReactPackage) {
     return matchReactPackage[1];
   }
@@ -192,7 +192,7 @@ export function matchNativePackageClassName(_filePath: string, contents: Buffer)
     lazyTurboReactPackageRegex =
       /class\s+(\w+[^(\s]*)[\s\w():]*(\s+extends\s+|:)[\s\w():,]*[^{]*(Base|Turbo)ReactPackage/;
   }
-  const matchTurboReactPackage = fileContents.match(lazyTurboReactPackageRegex);
+  const matchTurboReactPackage = contents.match(lazyTurboReactPackageRegex);
   if (matchTurboReactPackage) {
     return matchTurboReactPackage[1];
   }

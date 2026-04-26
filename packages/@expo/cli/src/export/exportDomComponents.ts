@@ -139,7 +139,10 @@ export function transformDomEntryForMd5Filename({
 }): PlatformMetadata['assets'] {
   const htmlContent = files.get(htmlOutputName);
   assert(htmlContent);
-  const htmlMd5 = crypto.createHash('md5').update(htmlContent.contents.toString()).digest('hex');
+  const htmlMd5 = crypto
+    .createHash('md5')
+    .update(htmlContent.contents.toString('utf8'))
+    .digest('hex');
   const htmlMd5Filename = `${DOM_COMPONENTS_BUNDLE_DIR}/${htmlMd5}.html`;
   files.set(htmlMd5Filename, htmlContent);
   files.delete(htmlOutputName);
@@ -167,7 +170,10 @@ export function transformNativeBundleForMd5Filename({
 }) {
   const htmlContent = files.get(htmlOutputName);
   assert(htmlContent);
-  const htmlMd5 = crypto.createHash('md5').update(htmlContent.contents.toString()).digest('hex');
+  const htmlMd5 = crypto
+    .createHash('md5')
+    .update(htmlContent.contents.toString('utf8'))
+    .digest('hex');
   const hash = crypto.createHash('md5').update(domComponentReference).digest('hex');
   for (const artifact of nativeBundle.artifacts) {
     if (artifact.type !== 'js') {
@@ -188,7 +194,7 @@ export function transformNativeBundleForMd5Filename({
       const search = `${hash}.html`;
       const replace = `${htmlMd5}.html`;
       assert(search.length === replace.length);
-      assetEntity.contents = assetEntity.contents.toString().replaceAll(search, replace);
+      assetEntity.contents = assetEntity.contents.toString('utf8').replaceAll(search, replace);
     }
   }
 }
