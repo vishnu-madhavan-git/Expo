@@ -58,7 +58,7 @@ describe('e2e: Android locales', () => {
       },
     };
     const mockJSONFile = {
-      readAsync: (path) => JSON.parse(vol.readFileSync(path).toString()),
+      readAsync: (path) => JSON.parse(vol.readFileSync(path, 'utf8') as string),
     };
     jest.mock('../../utils/XML', () => mockXML);
     jest.mock('@expo/json-file', () => mockJSONFile);
@@ -84,22 +84,25 @@ describe('e2e: Android locales', () => {
       { projectRoot }
     );
 
-    expect(vol.readFileSync('/app/android/app/src/main/res/values-b+es/strings.xml').toString())
-      .toMatchInlineSnapshot(`
+    expect(
+      vol.readFileSync('/app/android/app/src/main/res/values-b+es/strings.xml', 'utf8') as string
+    ).toMatchInlineSnapshot(`
       "<resources>
         <string name="CFBundleDisplayName">"spanish-name"</string>
       </resources>"
     `);
     // backwards compatibility
-    expect(vol.readFileSync('/app/android/app/src/main/res/values-b+en/strings.xml').toString())
-      .toMatchInlineSnapshot(`
+    expect(
+      vol.readFileSync('/app/android/app/src/main/res/values-b+en/strings.xml', 'utf8') as string
+    ).toMatchInlineSnapshot(`
       "<resources>
         <string name="CFBundleDisplayName">"us-name"</string>
         <string name="app_name">"us-name"</string>
       </resources>"
     `);
-    expect(vol.readFileSync('/app/android/app/src/main/res/values-b+en+US/strings.xml').toString())
-      .toMatchInlineSnapshot(`
+    expect(
+      vol.readFileSync('/app/android/app/src/main/res/values-b+en+US/strings.xml', 'utf8') as string
+    ).toMatchInlineSnapshot(`
       "<resources>
         <string name="app_name">"us-name"</string>
       </resources>"

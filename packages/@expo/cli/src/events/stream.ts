@@ -61,7 +61,7 @@ export class LogStream extends EventEmitter implements NodeJS.WritableStream {
 
       const outputLength = Buffer.byteLength(this.#output);
       if (outputLength > written) {
-        const output = Buffer.from(this.#output).subarray(written).toString();
+        const output = Buffer.from(this.#output).subarray(written).toString('utf8');
         this.#len -= this.#output.length - output.length;
         this.#output = output;
       } else {

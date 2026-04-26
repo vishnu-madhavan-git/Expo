@@ -440,7 +440,7 @@ class CustomReactPackage : TurboReactPackage() {
 }`,
       },
     ])('should handle $description', ({ content }) => {
-      expect(matchNativePackageClassName(path, Buffer.from(content))).toBe('CustomReactPackage');
+      expect(matchNativePackageClassName(path, content)).toBe('CustomReactPackage');
     });
 
     // these are not as exhaustive as they could be, but cover main cases
@@ -462,7 +462,7 @@ public class CustomReactPackage extends SomeOtherPackage {
         content: '',
       },
     ])('should return null for $description', ({ content }) => {
-      expect(matchNativePackageClassName(path, Buffer.from(content))).toBeNull();
+      expect(matchNativePackageClassName(path, content)).toBeNull();
     });
   });
 });
