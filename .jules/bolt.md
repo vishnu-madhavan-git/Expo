@@ -1,0 +1,3 @@
+## 2024-10-24 - Node.js `readFileSync` Memory Optimization
+**Learning:** In Node.js components, calling `.toString()` on a `Buffer` returned by `fs.readFileSync` or `memfs` `vol.readFileSync` causes an unnecessary intermediate memory allocation. Passing the encoding string (e.g., `'utf8'`) directly as the second argument to `readFileSync` avoids this overhead and returns a string directly.
+**Action:** When working with file reads in tests and CLI utilities, refactor `readFileSync(path).toString()` to `readFileSync(path, 'utf8')`. When doing this in TypeScript with `memfs` (`vol`), remember to add `as string` if the type signature demands it, and be prepared to run `jest -u` to update any snapshot tests that might subtly change due to the new string formatting.

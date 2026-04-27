@@ -55,7 +55,7 @@ const readTemplate = (template: string, platform?: PlatformString): string => {
     throw new Error(`Template ${template} doesn't exist at ${templatePath}`);
   }
 
-  return readFileSync(templatePath).toString();
+  return readFileSync(templatePath, 'utf8');
 };
 
 const createFileFromTemplateInternal = (
