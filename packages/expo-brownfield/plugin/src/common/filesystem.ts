@@ -26,13 +26,16 @@ const maybeReadOverwrittenTemplate = (template: string, platform?: PlatformStrin
   try {
     accessSync(path.join(process.cwd(), '.brownfield-templates'));
     if (existsSync(path.join(process.cwd(), '.brownfield-templates', template))) {
-      return readFileSync(path.join(process.cwd(), '.brownfield-templates', template)).toString();
+      // Optimization: pass 'utf8' directly to avoid intermediate buffer allocation
+      return readFileSync(path.join(process.cwd(), '.brownfield-templates', template), 'utf8');
     }
 
     if (existsSync(path.join(process.cwd(), '.brownfield-templates', platform ?? '.', template))) {
+      // Optimization: pass 'utf8' directly to avoid intermediate buffer allocation
       return readFileSync(
-        path.join(process.cwd(), '.brownfield-templates', platform ?? '.', template)
-      ).toString();
+        path.join(process.cwd(), '.brownfield-templates', platform ?? '.', template),
+        'utf8'
+      );
     }
     // eslint-disable-next-line no-empty
   } catch {}
@@ -55,7 +58,8 @@ const readTemplate = (template: string, platform?: PlatformString): string => {
     throw new Error(`Template ${template} doesn't exist at ${templatePath}`);
   }
 
-  return readFileSync(templatePath).toString();
+  // Optimization: pass 'utf8' directly to avoid intermediate buffer allocation
+  return readFileSync(templatePath, 'utf8');
 };
 
 const createFileFromTemplateInternal = (
